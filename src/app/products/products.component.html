@@ -1,0 +1,52 @@
+<div class=" container">
+
+    <div class="card">
+      <div class="card-header">
+        products List
+      </div>  
+      <div class="card-body">
+        {{searchFormGroup.value | json }}
+        <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchProducts()">
+            <div class="input-group">
+                <label class="input-group-text">keyword:</label>
+                <input type="text" class="form-control" formControlName="keyword">
+                <button class="btn btn-info">
+                    <i class=" bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+        <table class="table">
+            <thead>
+                <th>id</th>
+                <th>name</th>
+                <th>price</th>
+                <th>promotion</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of products">
+                <td>{{p.id}}</td>
+                <td>{{p.name}}</td>
+                <td>{{p.price}}</td>
+                <td><i *ngIf="p.promotion==true" class="bi bi-heart-fill"></i></td>
+                <td>
+                    <button (click)="handlesetPromotion(p)" [ngClass] ="p.promotion==true? 'btn-danger':'btn-success'" class="btn" >
+                        <span *ngIf="p.promotion==true">Promo Off</span>
+                        <span *ngIf="p.promotion==false">Promo On</span>
+                    </button>
+                </td>
+            <td *ngIf="authServ.hasRole('ADMIN')">
+                <button (click)="handleDeleteProduct(p)" class="btn btn-danger">Delete
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td></tr>
+            </tbody>
+        </table>
+        <ul class="nav nav-pills">
+            <li *ngFor="let item of [].constructor(this.totalPage); let i=index">
+                <a (click)="gotoPage(i)" [ngClass]="i==currentPage?'btn-info':'btn-outline-info'"
+                 class="btn btn-outline-info ms-1 mt-1">{{i}}</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+</div>
